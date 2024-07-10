@@ -1,0 +1,29 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "708d6f1510ec3989ca55f4804d39d635"
+name = "QRCode Generator"
+handle = "qrcode-generator-7"
+application_url = "https://directory-configured-building-bucks.trycloudflare.com"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "ti-amor.myshopify.com"
+include_config_on_deploy = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = ""
+
+[auth]
+redirect_urls = [
+  "https://directory-configured-building-bucks.trycloudflare.com/auth/callback",
+  "https://directory-configured-building-bucks.trycloudflare.com/auth/shopify/callback",
+  "https://directory-configured-building-bucks.trycloudflare.com/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2024-07"
+
+[pos]
+embedded = false
