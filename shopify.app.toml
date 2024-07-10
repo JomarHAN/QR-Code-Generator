@@ -3,7 +3,7 @@
 client_id = "708d6f1510ec3989ca55f4804d39d635"
 name = "QRCode Generator"
 handle = "qrcode-generator-7"
-application_url = "https://tactics-avi-worker-romantic.trycloudflare.com"
+application_url = "https://environments-reduction-postage-appointments.trycloudflare.com"
 embedded = true
 
 [build]
@@ -13,13 +13,13 @@ include_config_on_deploy = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = ""
+scopes = "read_products"
 
 [auth]
 redirect_urls = [
-  "https://tactics-avi-worker-romantic.trycloudflare.com/auth/callback",
-  "https://tactics-avi-worker-romantic.trycloudflare.com/auth/shopify/callback",
-  "https://tactics-avi-worker-romantic.trycloudflare.com/api/auth/callback"
+  "https://environments-reduction-postage-appointments.trycloudflare.com/auth/callback",
+  "https://environments-reduction-postage-appointments.trycloudflare.com/auth/shopify/callback",
+  "https://environments-reduction-postage-appointments.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

@@ -71,7 +71,7 @@ export const action = async ({ request, params }) => {
 };
 
 export default function QRCodeForm() {
-  const errors = useActionData().errors || {};
+  const errors = useActionData()?.errors || {};
 
   const qrCode = useLoaderData();
   const [formState, setFormState] = useState(qrCode);
