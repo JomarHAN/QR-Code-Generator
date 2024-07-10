@@ -3,7 +3,7 @@
 client_id = "708d6f1510ec3989ca55f4804d39d635"
 name = "QRCode Generator"
 handle = "qrcode-generator-7"
-application_url = "https://directory-configured-building-bucks.trycloudflare.com"
+application_url = "https://tactics-avi-worker-romantic.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = ""
 
 [auth]
 redirect_urls = [
-  "https://directory-configured-building-bucks.trycloudflare.com/auth/callback",
-  "https://directory-configured-building-bucks.trycloudflare.com/auth/shopify/callback",
-  "https://directory-configured-building-bucks.trycloudflare.com/api/auth/callback"
+  "https://tactics-avi-worker-romantic.trycloudflare.com/auth/callback",
+  "https://tactics-avi-worker-romantic.trycloudflare.com/auth/shopify/callback",
+  "https://tactics-avi-worker-romantic.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

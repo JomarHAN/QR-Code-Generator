@@ -1,63 +1,73 @@
-import qrcode from 'qrcode'
-import db from '../db.server'
-import invariant from 'tiny-invariant'
+import qrcode from "qrcode";
+import invariant from "tiny-invariant";
+import db from "../db.server";
 
 export async function getQRCode(id, graphql) {
-    const qrCode = await db.qRCode.findFirst({ where: { id: id } })
+    const qrCode = await db.qRCode.findFirst({ where: { id } });
 
     if (!qrCode) {
-        return null
+        return null;
     }
 
-    return supplementQRCode(qrCode, graphql)
+    return supplementQRCode(qrCode, graphql);
 }
 
 export async function getQRCodes(shop, graphql) {
-    const qrCodes = await db.qRCode.findMany({ where: { shop: shop }, orderBy: { id: 'desc' } })
+    const qrCodes = await db.qRCode.findMany({
+        where: { shop },
+        orderBy: { id: "desc" },
+    });
 
     if (qrCodes.length === 0) return [];
 
-    return Promise.all(qrCodes.map(qrCode => supplementQRCode(qrCode, graphql)))
+    return Promise.all(
+        qrCodes.map((qrCode) => supplementQRCode(qrCode, graphql))
+    );
 }
 
 export function getQRCodeImage(id) {
-    const url = new URL(`/qrcodes/${id}/scan`, process.env.SHOPIFY_APP_URL)
-    return qrcode.toDataURL(url.href)
+    const url = new URL(`/qrcodes/${id}/scan`, process.env.SHOPIFY_APP_URL);
+    return qrcode.toDataURL(url.href);
 }
 
-export function getDestinationURL(qrCode) {
+export function getDestinationUrl(qrCode) {
     if (qrCode.destination === "product") {
-        return `https://${qrCode.shop}/products/${qrCode.productHandle}`
+        return `https://${qrCode.shop}/products/${qrCode.productHandle}`;
     }
 
     const match = /gid:\/\/shopify\/ProductVariant\/([0-9]+)/.exec(qrCode.productVariantId);
-    invariant(match, 'Unrecognized product variant ID')
+    invariant(match, "Unrecognized product variant ID");
 
-    return `https://${qrCode.shop}/cart/${match[1]}:1`
+    return `https://${qrCode.shop}/cart/${match[1]}:1`;
 }
 
 async function supplementQRCode(qrCode, graphql) {
     const qrCodeImagePromise = getQRCodeImage(qrCode.id);
 
-    const response = await graphql(`
-        query supplementQRCode($id: ID!){
-            product(id: $id){
-                title
-                images(first: 1){
-                    nodes{
-                        altText
-                        url
-                    }
-                }
+    const response = await graphql(
+        `
+      query supplementQRCode($id: ID!) {
+        product(id: $id) {
+          title
+          images(first: 1) {
+            nodes {
+              altText
+              url
             }
+          }
         }
-    `, {
-        variables: {
-            id: qrCode.productId
+      }
+    `,
+        {
+            variables: {
+                id: qrCode.productId,
+            },
         }
-    })
+    );
 
-    const { data: { product } } = await response.json()
+    const {
+        data: { product },
+    } = await response.json();
 
     return {
         ...qrCode,
@@ -65,27 +75,27 @@ async function supplementQRCode(qrCode, graphql) {
         productTitle: product?.title,
         productImage: product?.images?.nodes[0]?.url,
         productAlt: product?.images?.nodes[0]?.altText,
-        destination: getDestinationURL(qrCode),
-        image: await qrCodeImagePromise
-    }
+        destinationUrl: getDestinationUrl(qrCode),
+        image: await qrCodeImagePromise,
+    };
 }
 
 export function validateQRCode(data) {
     const errors = {};
 
     if (!data.title) {
-        errors.title = 'Title is required'
-    }
-
-    if (!data.destination) {
-        errors.destination = 'Destination is required'
+        errors.title = "Title is required";
     }
 
     if (!data.productId) {
-        errors.productId = 'Product is required'
+        errors.productId = "Product is required";
+    }
+
+    if (!data.destination) {
+        errors.destination = "Destination is required";
     }
 
     if (Object.keys(errors).length) {
-        return errors
+        return errors;
     }
 }
